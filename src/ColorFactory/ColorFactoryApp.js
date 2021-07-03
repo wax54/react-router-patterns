@@ -17,12 +17,53 @@ const ColorRoute = ({ colors }) => {
     return color ? <ColorViewer color={color.color} /> : <Redirect to="/colors" />
 };
 
+const NewColorForm = ({ addColor }) => {
+    const initialForm = {
+        name: '',
+        value: '#000000'
+    }
+    const [formData, setFormData] = useState(initialForm);
+
+    const handleChange = evt => {
+        console.log("hello!");
+        setFormData(data => {
+            console.log(evt.target.name);
+            console.log(evt.target.value);
+
+
+           return {...data, [evt.target.name]: evt.target.value}
+        });
+    }
+    const handleSubmit = evt => {
+        evt.preventDefault();
+        const color = {name: formData.colorName, value: formData.colorValue};
+        addColor(color);
+    }
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <label htmlFor="colorName">Color Name:</label>
+            <input type="text" 
+                name="name" 
+                value={formData.name} 
+                onChange={handleChange} 
+            />
+            <label htmlFor="colorName">Color Value:</label>
+            <input type="color" 
+                name="value"
+                value={formData.value}
+                onChange={handleChange}
+            />
+        </form>
+)};
+
 const ColorFactoryApp = ({ initialColors }) => {
     const [colors, setColors] = useState(initialColors);
     const addColor = color => setColors(colors => [color, ...colors])
     return (
         <div> 
             <Route exact path="/colors">
+                <NewColorForm addColor={addColor} />
                 <Nav title="Your Color Options" 
                     items={colors.map(({ name }) => 
                         ({url:`/colors/${name}`, text: name}))} 
