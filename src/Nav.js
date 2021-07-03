@@ -4,10 +4,11 @@ const Nav = ({ title, items }) => (
     <nav >
         <h3>{title}</h3>
         <ul>
-            {items.map(({ name }) => <li key={name}>
-                <Link to={`/dogs/${name}`}>{name}</Link>
+            {items.map(({ url, text }) => <li key={url}>
+                <Link to={url}> {text} </Link>
             </li>)}
         </ul>
     </nav>
 );
+
 export default Nav

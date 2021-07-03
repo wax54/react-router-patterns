@@ -17,7 +17,7 @@ const DogApp = ({ dogs }) => {
             <h1>Dogs App</h1>
             <Switch>
                 <Route exact path="/dogs">
-                    <Nav title="Here are my Dogs!" items={dogs} />
+                    <Nav title="Here are my Dogs!" items={dogs.map(({name}) => ({url:`/dogs/${name}`, text: name}))} />
                 </Route>
 
                 <Route exact path="/dogs/:name">
