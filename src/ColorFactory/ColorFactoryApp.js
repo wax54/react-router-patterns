@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 import { Redirect, Route, useParams, Link, Switch } from 'react-router-dom';
 
 import Nav from '../Nav';
@@ -7,7 +7,6 @@ import NewColorForm from './NewColorForm';
 
 const ColorRoute = ({ colors }) => {
     const colorName = useParams().color;
-    
     const color = colors.find(color => color.name === colorName );
     
     return color ? 
@@ -16,20 +15,28 @@ const ColorRoute = ({ colors }) => {
 };
 
 
+const ColorFactoryIndex = ({ colors }) => (
+    <>
+        <h1>The Color Factory</h1>
+        <Link to="/colors/new" >Add a Color!</Link>
+        <Nav title="Your Color Options" 
+            items={colors.map(({ name }) => 
+                ({url:`/colors/${name}`, text: name}))} 
+        /> 
+    </>
+    );
+
 const ColorFactoryApp = ({ initialColors }) => {
+
     const [colors, setColors] = useState(initialColors);
     const addColor = color => setColors(colors => [color, ...colors])
 
     return (
         <div>
             <Switch>
+
                 <Route exact path="/colors">
-                    <h1>The Color Factory</h1>
-                    <Link to="/colors/new" >Add a Color!</Link>
-                    <Nav title="Your Color Options" 
-                        items={colors.map(({ name }) => 
-                            ({url:`/colors/${name}`, text: name}))} 
-                    /> 
+                    <ColorFactoryIndex colors={colors} />
                 </Route>
 
                 <Route exact path="/colors/new">
@@ -39,6 +46,7 @@ const ColorFactoryApp = ({ initialColors }) => {
                 <Route exact path="/colors/:color">
                     <ColorRoute colors={colors} />
                 </Route>
+
             </Switch>
         </div>
     );
